@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">コンテンツページ</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1 id="page-title"></h1>
+    </header>
+
+    <main>
+        <img id="thumbnail" src="algebra.png" alt="サムネイル画像">
+        <p id="description"></p>
+        <p>タグ: <span id="tags"></span></p>
+        <p>最終更新日: <span id="lastUpdated"></span></p>
+    </main>
+
+    <footer>
+        <p>編集者プロフィール: 山田太郎</p>
+    </footer>
+
+    <script>
+        // このページの内容を動的に設定
+        const contentData = {
+            title: "代数",
+            imgSrc: "algebra.png",
+            description: "数と文字を使った数式による表現。",
+            tags: ["代数", "数式"],
+            lastUpdated: "2024年3月15日"
+        };
+
+        document.getElementById('title').textContent = contentData.title;
+        document.getElementById('page-title').textContent = contentData.title;
+        document.getElementById('thumbnail').src = contentData.imgSrc;
+        document.getElementById('description').textContent = contentData.description;
+        document.getElementById('tags').textContent = contentData.tags.join(", ");
+        document.getElementById('lastUpdated').textContent = contentData.lastUpdated;
+    </script>
+</body>
+</html>
