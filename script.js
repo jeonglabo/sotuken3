@@ -45,6 +45,7 @@ function loadPageData() {
     // 全てのメタデータが読み込まれた後にページを生成
     Promise.all(promises).then(() => {
         const sortedContents = sortContentsByDate(allPages); // 更新日順にソート
+        currentContent = sortedContents; // currentContentに読み込んだページを設定
         generatePageContent(sortedContents, 1); // 初期表示
         generatePagination(sortedContents, 1);  // ページネーションを生成
         generateTagList(sortedContents); // タグリストを生成
@@ -114,46 +115,45 @@ function generateTagList(allPages) {
 
 // タグでフィルタリングされたコンテンツを生成する関数
 function generateFilteredContent(tag) {
+    // タグが選択されていない場合のみ追加
     if (!selectedTags.includes(tag)) {
-        selectedTags.push(tag); // タグが既に選択されていない場合のみ追加
+        selectedTags.push(tag);
     }
     filterAndDisplayContent(); // フィルタリングと表示を実行
 }
 
 // 選択されたタグを削除する関数
 function removeTag(tag) {
-    // 削除されたタグを selectedTags から除去
+    // selectedTags から削除されたタグを除外
     selectedTags = selectedTags.filter(selectedTag => selectedTag !== tag);
 
-    // タグリストとフィルタリングの更新
-    displaySelectedTags();
-    filterAndDisplayContent(); // 削除後の状態で再度フィルタリング
+    // タグの表示を更新し、フィルタリングを再実行
+    displaySelectedTags(); // 削除された後のタグ表示を更新
+    filterAndDisplayContent(); // フィルタリングを再実行
 }
 
 // 選択されたタグを基にコンテンツをフィルタリングし、表示する関数
 function filterAndDisplayContent() {
-    let filteredContent;
+    // 全コンテンツをリセットして再表示
+    let filteredContent = currentContent.slice(); // 全てのコンテンツを表示
 
-    // タグが選択されていない場合は全てのコンテンツを表示
-    if (selectedTags.length === 0) {
-        filteredContent = currentContent;
-    } else {
-        // 選択されたタグのみに基づいてフィルタリング
-        filteredContent = currentContent.filter(item =>
-            // 各コンテンツのタグが selectedTags 内のいずれかのタグを含むか確認
-            selectedTags.every(selectedTag => item.tags.includes(selectedTag))
+    // 選択されたタグがあればそのタグに基づいてフィルタリング
+    if (selectedTags.length > 0) {
+        filteredContent = filteredContent.filter(item =>
+            selectedTags.every(selectedTag => item.tags.includes(selectedTag)) // 選択されたタグすべてを含むアイテムのみ表示
         );
     }
 
     // フィルタリング結果を反映
     generatePageContent(filteredContent, 1); // 1ページ目の結果を表示
     generatePagination(filteredContent, 1);  // ページネーションを更新
+    displaySelectedTags(); // 選択されたタグを再表示
 }
 
 // 選択されたタグを表示する関数
 function displaySelectedTags() {
     const selectedTagElement = document.getElementById('selected-tags');
-    
+
     // タグが選択されていない場合は非表示
     if (selectedTags.length === 0) {
         selectedTagElement.style.display = 'none';
@@ -162,7 +162,7 @@ function displaySelectedTags() {
 
     // タグがある場合は表示
     selectedTagElement.style.display = 'block';
-    const tagsHTML = selectedTags.map(tag => 
+    const tagsHTML = selectedTags.map(tag =>
         `<span class="tag"><span class="remove-tag" onclick="removeTag('${tag}')">×</span>${tag}</span>`
     ).join(' ');
 
@@ -217,20 +217,20 @@ function changePage(newPage) {
     generatePageContent(currentContent, newPage); // 現在のコンテンツでページを更新
     generatePagination(currentContent, newPage); // ページネーションを更新
 }
-
 // タグクリック時にフィルタリングする関数
 function handleTagClick(event) {
     event.preventDefault();
     const tag = event.target.textContent;
 
+    // タグが既に選択されていない場合のみ追加
     if (!selectedTags.includes(tag)) {
-        selectedTags.push(tag); // タグが既に選択されていない場合のみ追加
+        selectedTags.push(tag);
     }
 
-    displaySelectedTags(); // タグリストを更新
-    filterAndDisplayContent(); // フィルタリングと表示を実行
+    // タグリストとフィルタリングの更新
+    displaySelectedTags();
+    filterAndDisplayContent();
 }
-
 
 // 検索ボックスでエンターキーが押されたら検索を実行
 document.querySelector('.search-box input').addEventListener('keydown', function(event) {
