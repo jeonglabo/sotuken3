@@ -18,120 +18,6 @@ const directories = [
     'stochastic_process'
 ];
 
-/*
-const pageContents = [
-    [
-        {
-            imgSrc: "./algebra/algebra.png", // 代数のアイコン画像パスに変更
-            alt: "代数",
-            title: "代数",
-            description: "数と文字を使った数式による表現",
-            tags: ["代数", "数式"],
-            link: "algebra/index.html", // 個別ページへのリンク
-            lastUpdated: "20240325" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "線形代数",
-            title: "線形代数",
-            description: "ベクトルと行列に関する数学概念",
-            tags: ["線形代数", "ベクトル"],
-            link: "linear_algebra/index.html", // 個別ページへのリンク
-            lastUpdated: "20240312" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "幾何学",
-            title: "幾何学",
-            description: "図形とその性質に関する研究",
-            tags: ["幾何学", "図形"],
-            link: "geometry/index.html", // 個別ページへのリンク
-            lastUpdated: "20240310" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "微積分",
-            title: "微積分",
-            description: "関数の変化と累積に関する理論",
-            tags: ["微積分", "関数"],
-            link: "calculus/index.html", // 個別ページへのリンク
-            lastUpdated: "20240309" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "統計",
-            title: "統計",
-            description: "データの収集、分析、解釈の方法",
-            tags: ["統計", "データ"],
-            link: "statistics/index.html", // 個別ページへのリンク
-            lastUpdated: "20240311" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "確率論",
-            title: "確率論",
-            description: "偶然性と不確実性の数学的研究",
-            tags: ["確率論", "確率"],
-            link: "probability/index.html", // 個別ページへのリンク
-            lastUpdated: "20240314" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "フラクタル",
-            title: "フラクタル",
-            description: "自己相似性を持つ幾何学的構造",
-            tags: ["フラクタル", "幾何学"],
-            link: "fractal/index.html", // 個別ページへのリンク
-            lastUpdated: "20240313" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "微分方程式",
-            title: "微分方程式",
-            description: "変化を記述する方程式",
-            tags: ["微分方程式", "数式"],
-            link: "differential_equation/index.html", // 個別ページへのリンク
-            lastUpdated: "20240316" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "離散数学",
-            title: "離散数学",
-            description: "有限の対象に関する数学",
-            tags: ["離散数学", "数式"],
-            link: "discrete_math/index.html", // 個別ページへのリンク
-            lastUpdated: "20240318" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "複素解析",
-            title: "複素解析",
-            description: "複素数を用いた関数解析",
-            tags: ["複素解析", "関数"],
-            link: "complex_analysis/index.html", // 個別ページへのリンク
-            lastUpdated: "20240317" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "数値解析",
-            title: "数値解析",
-            description: "数値的に問題を解く方法",
-            tags: ["数値解析", "計算"],
-            link: "numerical_analysis/index.html", // 個別ページへのリンク
-            lastUpdated: "20240319" // YYYYMMDD形式の更新日
-        },
-        {
-            imgSrc: "/api/placeholder/400/150",
-            alt: "確率過程",
-            title: "確率過程",
-            description: "確率的な時間発展に関する理論",
-            tags: ["確率過程", "確率"],
-            link: "stochastic_process/index.html", // 個別ページへのリンク
-            lastUpdated: "20240320" // YYYYMMDD形式の更新日
-        }
-    ]
-];*/
-
 // 各ディレクトリの meta.json を読み込む
 function loadPageData() {
     let allPages = [];
@@ -143,7 +29,14 @@ function loadPageData() {
             .then(data => {
                 // ディレクトリ名からリンクを生成
                 data.link = `./${directory}/index.html`;
-                data.imgSrc = data.thumbnail || `./${directory}/thumbnail.png`; // サムネイル画像パスを設定
+
+                // サムネイル画像のパスを補完 (ディレクトリ名を付加)
+                if (data.thumbnail) {
+                    data.imgSrc = `./${directory}/${data.thumbnail}`; // パス補完
+                } else {
+                    data.imgSrc = `./${directory}/thumbnail.png`; // サムネイルがなければデフォルト
+                }
+
                 allPages.push(data); // ページ情報を全体の配列に追加
             })
             .catch(error => console.error('Error loading meta data:', error));
@@ -229,34 +122,50 @@ function generateFilteredContent(tag) {
 
 // 選択されたタグを削除する関数
 function removeTag(tag) {
-    selectedTags = selectedTags.filter(selectedTag => selectedTag !== tag); // タグを削除
-    filterAndDisplayContent(); // フィルタリングと表示を実行
+    // 削除されたタグを selectedTags から除去
+    selectedTags = selectedTags.filter(selectedTag => selectedTag !== tag);
+
+    // タグリストとフィルタリングの更新
+    displaySelectedTags();
+    filterAndDisplayContent(); // 削除後の状態で再度フィルタリング
 }
 
-// 選択されたタグを表示し、フィルタリングを行う関数
+// 選択されたタグを基にコンテンツをフィルタリングし、表示する関数
 function filterAndDisplayContent() {
-    const filteredContent = currentContent.filter(item =>
-        selectedTags.every(selectedTag => item.tags.includes(selectedTag))
-    );
-    
+    let filteredContent;
+
+    // タグが選択されていない場合は全てのコンテンツを表示
+    if (selectedTags.length === 0) {
+        filteredContent = currentContent;
+    } else {
+        // 選択されたタグのみに基づいてフィルタリング
+        filteredContent = currentContent.filter(item =>
+            // 各コンテンツのタグが selectedTags 内のいずれかのタグを含むか確認
+            selectedTags.every(selectedTag => item.tags.includes(selectedTag))
+        );
+    }
+
+    // フィルタリング結果を反映
     generatePageContent(filteredContent, 1); // 1ページ目の結果を表示
-    generatePagination(filteredContent, 1); // フィルタ結果に基づいてページネーションを生成
-    displaySelectedTags(); // 選択されたタグを表示
+    generatePagination(filteredContent, 1);  // ページネーションを更新
 }
 
-// 選択されたタグを解説ページの上に表示する関数
+// 選択されたタグを表示する関数
 function displaySelectedTags() {
     const selectedTagElement = document.getElementById('selected-tags');
     
+    // タグが選択されていない場合は非表示
     if (selectedTags.length === 0) {
-        selectedTagElement.style.display = 'none'; // タグが選択されていない場合は非表示
+        selectedTagElement.style.display = 'none';
         return;
     }
 
-    selectedTagElement.style.display = 'block'; // タグがある場合は表示
+    // タグがある場合は表示
+    selectedTagElement.style.display = 'block';
     const tagsHTML = selectedTags.map(tag => 
         `<span class="tag"><span class="remove-tag" onclick="removeTag('${tag}')">×</span>${tag}</span>`
     ).join(' ');
+
     selectedTagElement.innerHTML = `選択されたタグ: ${tagsHTML}`;
 }
 
@@ -313,8 +222,15 @@ function changePage(newPage) {
 function handleTagClick(event) {
     event.preventDefault();
     const tag = event.target.textContent;
-    generateFilteredContent(tag); // タグに基づいてコンテンツをフィルタリング
+
+    if (!selectedTags.includes(tag)) {
+        selectedTags.push(tag); // タグが既に選択されていない場合のみ追加
+    }
+
+    displaySelectedTags(); // タグリストを更新
+    filterAndDisplayContent(); // フィルタリングと表示を実行
 }
+
 
 // 検索ボックスでエンターキーが押されたら検索を実行
 document.querySelector('.search-box input').addEventListener('keydown', function(event) {

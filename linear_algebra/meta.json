@@ -3,5 +3,5 @@
     "description": "ベクトルと行列に関する数学概念",
     "tags": ["線形代数", "ベクトル"],
     "lastUpdated": "20240312",
-    "thumbnail": "./linear_algebra/linear_algebra.png"
+    "thumbnail": "linear_algebra.png"
 }

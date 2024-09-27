@@ -12,7 +12,7 @@
     </header>
 
     <main>
-        <img id="thumbnail" src="linear_algebra.png" alt="サムネイル画像">
+        <img id="thumbnail" src="" alt="サムネイル画像">
         <p id="description"></p>
         <p>タグ: <span id="tags"></span></p>
         <p>最終更新日: <span id="lastUpdated"></span></p>
@@ -23,21 +23,26 @@
     </footer>
 
     <script>
-        // このページの内容を動的に設定
-        const contentData = {
-            title: "線形代数",
-            imgSrc: "linear_algebra.png",
-            description: "ベクトルと行列に関する数学概念。",
-            tags: ["線形代数", "ベクトル"],
-            lastUpdated: "2024年3月12日"
-        };
+        // meta.jsonを読み込んでページに反映する
+        fetch('meta.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('title').textContent = data.title;
+                document.getElementById('page-title').textContent = data.title;
+                document.getElementById('thumbnail').src = data.thumbnail;
+                document.getElementById('description').textContent = data.description;
+                document.getElementById('tags').textContent = data.tags.join(", ");
+                document.getElementById('lastUpdated').textContent = formatDate(data.lastUpdated);
+            })
+            .catch(error => console.error('Error loading meta data:', error));
 
-        document.getElementById('title').textContent = contentData.title;
-        document.getElementById('page-title').textContent = contentData.title;
-        document.getElementById('thumbnail').src = contentData.imgSrc;
-        document.getElementById('description').textContent = contentData.description;
-        document.getElementById('tags').textContent = contentData.tags.join(", ");
-        document.getElementById('lastUpdated').textContent = contentData.lastUpdated;
+        // 日付をフォーマットする関数
+        function formatDate(yyyymmdd) {
+            const year = yyyymmdd.substring(0, 4);
+            const month = parseInt(yyyymmdd.substring(4, 6), 10);
+            const day = parseInt(yyyymmdd.substring(6, 8), 10);
+            return `${year}年${month}月${day}日`;
+        }
     </script>
 </body>
 </html>
