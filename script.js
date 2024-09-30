@@ -1,6 +1,7 @@
 const itemsPerPage = 4; // 1ページに表示するアイテム数
 let currentContent = []; // 現在表示しているコンテンツを保持
 let selectedTags = []; // 選択されたタグを保持する配列
+let allPages = [];
 
 // 読み込むディレクトリを定義
 const directories = [
@@ -20,35 +21,30 @@ const directories = [
 
 // 各ディレクトリの meta.json を読み込む
 function loadPageData() {
-    let allPages = [];
+    allPages = []; // allPages をリセット
 
     const promises = directories.map(directory => {
-        const metaPath = `./${directory}/meta.json`; // 各ディレクトリの meta.json を参照
+        const metaPath = `./${directory}/meta.json`;
         return fetch(metaPath)
             .then(response => response.json())
             .then(data => {
-                // ディレクトリ名からリンクを生成
                 data.link = `./${directory}/index.html`;
-
-                // サムネイル画像のパスを補完 (ディレクトリ名を付加)
                 if (data.thumbnail) {
-                    data.imgSrc = `./${directory}/${data.thumbnail}`; // パス補完
+                    data.imgSrc = `./${directory}/${data.thumbnail}`;
                 } else {
-                    data.imgSrc = `./${directory}/thumbnail.png`; // サムネイルがなければデフォルト
+                    data.imgSrc = `./${directory}/thumbnail.png`;
                 }
-
-                allPages.push(data); // ページ情報を全体の配列に追加
+                allPages.push(data);
             })
             .catch(error => console.error('Error loading meta data:', error));
     });
 
-    // 全てのメタデータが読み込まれた後にページを生成
     Promise.all(promises).then(() => {
-        const sortedContents = sortContentsByDate(allPages); // 更新日順にソート
-        currentContent = sortedContents; // currentContentに読み込んだページを設定
-        generatePageContent(sortedContents, 1); // 初期表示
-        generatePagination(sortedContents, 1);  // ページネーションを生成
-        generateTagList(sortedContents); // タグリストを生成
+        const sortedContents = sortContentsByDate(allPages);
+        currentContent = sortedContents;
+        generatePageContent(sortedContents, 1);
+        generatePagination(sortedContents, 1);
+        generateTagList(sortedContents);
     });
 }
 
@@ -124,48 +120,37 @@ function generateFilteredContent(tag) {
 
 // 選択されたタグを削除する関数
 function removeTag(tag) {
-    // selectedTags から削除されたタグを除外
     selectedTags = selectedTags.filter(selectedTag => selectedTag !== tag);
-
-    // タグの表示を更新し、フィルタリングを再実行
-    displaySelectedTags(); // 削除された後のタグ表示を更新
-    filterAndDisplayContent(); // フィルタリングを再実行
+    filterAndDisplayContent();
 }
 
 // 選択されたタグを基にコンテンツをフィルタリングし、表示する関数
 function filterAndDisplayContent() {
-    // 全コンテンツをリセットして再表示
-    let filteredContent = currentContent.slice(); // 全てのコンテンツを表示
-
-    // 選択されたタグがあればそのタグに基づいてフィルタリング
-    if (selectedTags.length > 0) {
-        filteredContent = filteredContent.filter(item =>
-            selectedTags.every(selectedTag => item.tags.includes(selectedTag)) // 選択されたタグすべてを含むアイテムのみ表示
+    let filteredContent;
+    if (selectedTags.length === 0) {
+        filteredContent = allPages.slice(); // 全てのコンテンツを表示
+    } else {
+        filteredContent = allPages.filter(item =>
+            selectedTags.every(selectedTag => item.tags.includes(selectedTag))
         );
     }
-
-    // フィルタリング結果を反映
-    generatePageContent(filteredContent, 1); // 1ページ目の結果を表示
-    generatePagination(filteredContent, 1);  // ページネーションを更新
-    displaySelectedTags(); // 選択されたタグを再表示
+    currentContent = filteredContent; // currentContent を更新
+    generatePageContent(filteredContent, 1);
+    generatePagination(filteredContent, 1);
+    displaySelectedTags();
 }
 
 // 選択されたタグを表示する関数
 function displaySelectedTags() {
     const selectedTagElement = document.getElementById('selected-tags');
-
-    // タグが選択されていない場合は非表示
     if (selectedTags.length === 0) {
         selectedTagElement.style.display = 'none';
         return;
     }
-
-    // タグがある場合は表示
     selectedTagElement.style.display = 'block';
     const tagsHTML = selectedTags.map(tag =>
         `<span class="tag"><span class="remove-tag" onclick="removeTag('${tag}')">×</span>${tag}</span>`
     ).join(' ');
-
     selectedTagElement.innerHTML = `選択されたタグ: ${tagsHTML}`;
 }
 
@@ -217,18 +202,14 @@ function changePage(newPage) {
     generatePageContent(currentContent, newPage); // 現在のコンテンツでページを更新
     generatePagination(currentContent, newPage); // ページネーションを更新
 }
+
 // タグクリック時にフィルタリングする関数
 function handleTagClick(event) {
     event.preventDefault();
     const tag = event.target.textContent;
-
-    // タグが既に選択されていない場合のみ追加
     if (!selectedTags.includes(tag)) {
         selectedTags.push(tag);
     }
-
-    // タグリストとフィルタリングの更新
-    displaySelectedTags();
     filterAndDisplayContent();
 }
 
