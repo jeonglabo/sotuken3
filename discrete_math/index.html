@@ -8,14 +8,14 @@
 </head>
 <body>
     <header>
-        <h1 id="page-title">離散数学</h1>
+        <h1 id="page-title"></h1>
     </header>
 
     <main>
-        <img id="thumbnail" src="" alt="離散数学のサムネイル画像" style="height: 300px; width: 100%; object-fit: cover;">
-        <p id="description">有限の対象に関する数学について解説します。</p>
-        <p>タグ: <span id="tags">離散数学, 数式</span></p>
-        <p>最終更新日: <span id="lastUpdated">2024年3月18日</span></p>
+        <img id="thumbnail" src="" alt="サムネイル画像" style="height: 300px; width: 100%; object-fit: cover;">
+        <p id="description"></p>
+        <p>タグ: <span id="tags"></span></p>
+        <p>最終更新日: <span id="lastUpdated"></span></p>
     </main>
 
     <footer>
@@ -23,6 +23,7 @@
     </footer>
 
     <script>
+        // meta.jsonを読み込んでページに反映する
         fetch('meta.json')
             .then(response => response.json())
             .then(data => {
@@ -35,6 +36,7 @@
             })
             .catch(error => console.error('Error loading meta data:', error));
 
+        // 日付をフォーマットする関数
         function formatDate(yyyymmdd) {
             const year = yyyymmdd.substring(0, 4);
             const month = parseInt(yyyymmdd.substring(4, 6), 10);
