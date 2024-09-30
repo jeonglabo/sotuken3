@@ -1,7 +1,7 @@
 const itemsPerPage = 4; // 1ページに表示するアイテム数
 let currentContent = []; // 現在表示しているコンテンツを保持
 let selectedTags = []; // 選択されたタグを保持する配列
-let allPages = [];
+let allPages = []; //全てのディレクトリから読み込んだページのメタデータを保持する配列
 
 // 読み込むディレクトリを定義
 const directories = [

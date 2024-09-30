@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせ - Mathlium</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* 画面の左側に余白を追加 */
+        main {
+            padding-left: 20px; /* 左側に20pxの余白 */
+            padding-right: 20px; /* 右側に20pxの余白（必要に応じて追加） */
+            max-width: 800px; /* 必要に応じて全体の幅を設定 */
+            margin: 0 auto; /* 中央寄せ */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>お問い合わせ</h1>
+    </header>
+
+    <main>
+        <p>ご質問やご要望がございましたら、以下のフォームにご記入ください。できるだけ早くご返信いたします。</p>
+        
+        <form id="contactForm">
+            <div>
+                <label for="name">お名前:</label><br>
+                <input type="text" id="name" name="name" required><br><br>
+            </div>
+            <div>
+                <label for="email">メールアドレス:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+            </div>
+            <div>
+                <label for="message">メッセージ:</label><br>
+                <textarea id="message" name="message" rows="5" required></textarea><br><br>
+            </div>
+            <button type="submit">送信</button>
+        </form>
+
+        <div id="formResponse" style="display:none; margin-top: 20px;">
+            <p>お問い合わせありがとうございました。ご返信までしばらくお待ちください。</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 Mathlium. All Rights Reserved. ご連絡先: <a href="mailto:mathlium@example.com">mathlium@example.com</a></p>
+    </footer>
+
+    <script>
+        // フォーム送信のイベントリスナー
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // ページリロードを防ぐ
+
+            // フォームデータを取得
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // 簡易バリデーション（空欄チェック）
+            if (name && email && message) {
+                // 通常ここでサーバーにフォームデータを送信する処理を行いますが、今回は送信完了のメッセージを表示
+                document.getElementById('contactForm').style.display = 'none'; // フォームを非表示
+                document.getElementById('formResponse').style.display = 'block'; // 送信完了メッセージを表示
+            } else {
+                alert('すべてのフィールドに入力してください。');
+            }
+        });
+    </script>
+</body>
+</html>
