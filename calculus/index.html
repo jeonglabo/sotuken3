@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title">コンテンツページ</title>
+    <title id="title">微積分</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <header>
-        <h1 id="page-title"></h1>
+        <h1 id="page-title">微積分</h1>
     </header>
 
     <main>
-        <img id="thumbnail" src="" alt="サムネイル画像" style="height: 300px; width: 100%; object-fit: cover;">
-        <p id="description"></p>
-        <p>タグ: <span id="tags"></span></p>
-        <p>最終更新日: <span id="lastUpdated"></span></p>
+        <img id="thumbnail" src="" alt="微積分のサムネイル画像" style="height: 300px; width: 100%; object-fit: cover;">
+        <p id="description">関数の変化と累積に関する理論について解説します。</p>
+        <p>タグ: <span id="tags">微積分, 関数</span></p>
+        <p>最終更新日: <span id="lastUpdated">2024年3月9日</span></p>
     </main>
 
     <footer>
@@ -23,7 +23,7 @@
     </footer>
 
     <script>
-        // meta.json を読み込んでページに反映する
+        // meta.jsonを読み込んでページに反映する
         fetch('meta.json')
             .then(response => response.json())
             .then(data => {
@@ -39,8 +39,8 @@
         // 日付をフォーマットする関数
         function formatDate(yyyymmdd) {
             const year = yyyymmdd.substring(0, 4);
-            const month = parseInt(yyyymmdd.substring(4, 6), 10); // 月は整数値に変換
-            const day = parseInt(yyyymmdd.substring(6, 8), 10);   // 日も整数値に変換
+            const month = parseInt(yyyymmdd.substring(4, 6), 10);
+            const day = parseInt(yyyymmdd.substring(6, 8), 10);
             return `${year}年${month}月${day}日`;
         }
     </script>
