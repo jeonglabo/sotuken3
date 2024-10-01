@@ -5,18 +5,18 @@ let allPages = []; //全てのディレクトリから読み込んだページ�
 
 // 読み込むディレクトリを定義
 const directories = [
-    'algebra',
-    'linear_algebra',
-    'geometry',
-    'calculus',
-    'statistics',
-    'probability',
-    'fractal',
-    'differential_equation',
-    'discrete_math',
-    'complex_analysis',
-    'numerical_analysis',
-    'stochastic_process'
+    './tryit/algebra',
+    './tryit/linear_algebra',
+    './tryit/geometry',
+    './tryit/calculus',
+    './tryit/statistics',
+    './tryit/probability',
+    './tryit/fractal',
+    './tryit/differential_equation',
+    './tryit/discrete_math',
+    './tryit/complex_analysis',
+    './tryit/numerical_analysis',
+    './tryit/stochastic_process'
 ];
 
 // 各ディレクトリの meta.json を読み込む

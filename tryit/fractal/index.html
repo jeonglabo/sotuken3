@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title">幾何学</title>
-    <link rel="stylesheet" href="../styles.css">
+    <title id="title">フラクタル</title>
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <header>
@@ -23,7 +23,7 @@
     </footer>
 
     <script>
-        // meta.json を読み込んでページに反映する
+        // meta.jsonを読み込んでページに反映する
         fetch('meta.json')
             .then(response => response.json())
             .then(data => {
@@ -39,8 +39,8 @@
         // 日付をフォーマットする関数
         function formatDate(yyyymmdd) {
             const year = yyyymmdd.substring(0, 4);
-            const month = parseInt(yyyymmdd.substring(4, 6), 10); // 月は整数値に変換
-            const day = parseInt(yyyymmdd.substring(6, 8), 10);   // 日も整数値に変換
+            const month = parseInt(yyyymmdd.substring(4, 6), 10);
+            const day = parseInt(yyyymmdd.substring(6, 8), 10);
             return `${year}年${month}月${day}日`;
         }
     </script>
