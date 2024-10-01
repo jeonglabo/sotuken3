@@ -4,6 +4,7 @@ let selectedTags = []; // 選択されたタグを保持する配列
 let allPages = []; //全てのディレクトリから読み込んだページのメタデータを保持する配列
 
 // 読み込むディレクトリを定義
+/*
 const directories = [
     './tryit/algebra',
     './tryit/linear_algebra',
@@ -17,6 +18,10 @@ const directories = [
     './tryit/complex_analysis',
     './tryit/numerical_analysis',
     './tryit/stochastic_process'
+];*/
+
+const directories =[
+    'linear_algebra'
 ];
 
 // 各ディレクトリの meta.json を読み込む

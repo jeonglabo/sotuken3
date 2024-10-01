@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathlium</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1><a href="https://jeonglabo.github.io/sotuken3/">Mathlium</a></h1>
+        <p>このサイトでは、数学の基礎から応用までをカバーします。</p>
+    </header>
+
+    <!-- パンくずリスト（動的に生成） -->
+    <nav aria-label="breadcrumb">
+        <div class="breadcrumb-container">
+            <ul id="breadcrumb" class="breadcrumb"></ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main class="main-content">
+            <h2>線形代数</h2>
+
+            <!-- タグ検索で選択されたタグを表示する要素 -->
+            <div id="selected-tags" class="selected-tags"></div>
+
+            <div class="grid"></div>
+            <div class="pagination" id="pagination"></div>
+        </main>
+
+        <aside class="sidebar">
+            <!-- サイト内検索 -->
+            <div class="search-box">
+                <h3>サイト内検索</h3>
+                <input type="text" placeholder="検索キーワードを入力">
+                <button>検索</button>
+            </div>
+
+            <!-- タグ検索 -->
+            <div class="tag-search">
+                <h3>タグ検索</h3>
+                <!-- タグリストはJavaScriptによって動的に生成されます -->
+            </div>
+
+            <div class="links">
+                <h3>リンク集</h3>
+                <ul>
+                    <li><a href="./editor_profile/index.html">プロフィール</a></li>
+                    <li><a href="./contact/index.html">お問い合わせ</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p>編集者プロフィール: 山田太郎 - 数学教育歴15年の経験豊富な講師です。</p>
+        <p>お問い合わせ: Email: mathlium@example.com 電話: 03-1234-5678</p>
+    </footer>
+
+    <script>
+        // パンくずリストを動的に生成する関数
+        function generateBreadcrumb() {
+            const breadcrumbElement = document.getElementById('breadcrumb');
+            const pathArray = window.location.pathname.split('/').filter(Boolean);
+            let breadcrumbHTML = '<li><a href="https://jeonglabo.github.io/sotuken3/">ホーム</a></li>';
+
+            let accumulatedPath = '';
+            pathArray.forEach((path, index) => {
+                // index.htmlは表示しない
+                if (path.toLowerCase() !== 'index.html') {
+                    accumulatedPath += `/${path}`;
+                    if (index === pathArray.length - 1) {
+                        breadcrumbHTML += `<li>${decodeURIComponent(path)}</li>`;
+                    } else {
+                        breadcrumbHTML += `<li><a href="${accumulatedPath}/index.html">${decodeURIComponent(path)}</a></li>`;
+                    }
+                }
+            });
+
+            breadcrumbElement.innerHTML = breadcrumbHTML;
+        }
+
+        // ページロード時にパンくずリストを生成
+        window.onload = function() {
+            generateBreadcrumb();
+        };
+    </script>
+</body>
+</html>

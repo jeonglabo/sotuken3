@@ -208,3 +208,37 @@ footer {
 .remove-tag:hover {
     color: darkred;
 }
+
+/* パンくずリストのスタイル */
+.breadcrumb-container {
+    background-color: #fff; /* 白色で塗りつぶし */
+    padding: 10px; /* 内側の余白 */
+    border: 1px solid #ddd; /* 枠のスタイル */
+    margin-bottom: 20px; /* 下に余白 */
+    border-radius: 5px; /* 角を少し丸める */
+}
+
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    font-size: 14px;
+}
+
+.breadcrumb li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.breadcrumb li+li:before {
+    content: "›"; /* 区切り文字として矢印を使用 */
+    margin-right: 10px;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #0073e6; /* 青色のリンク */
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
